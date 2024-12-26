@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimentação de Estoque</title>
+</head>
+<body>
+    <h1>Movimentação de Estoque</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="mes">Mês:</label>
+        <select name="mes" id="mes" required>
+            <option value="">Selecione</option>
+            <option value="Janeiro">Janeiro</option>
+            <option value="Fevereiro">Fevereiro</option>
+            <option value="Março">Março</option>
+            <option value="Abril">Abril</option>
+            <option value="Maio">Maio</option>
+            <option value="Junho">Junho</option>
+            <option value="Julho">Julho</option>
+            <option value="Agosto">Agosto</option>
+            <option value="Setembro">Setembro</option>
+            <option value="Outubro">Outubro</option>
+            <option value="Novembro">Novembro</option>
+            <option value="Dezembro">Dezembro</option>
+        </select>
+        <br>
+        <label for="ano">Ano:</label>
+        <input type="text" name="ano" id="ano" required>
+        <br>
+        <label for="file">Carregar Arquivo:</label>
+        <input type="file" name="file" id="file" accept=".xlsx" required>
+        <br>
+        <button type="submit">Processar</button>
+    </form>
+</body>
+</html>
