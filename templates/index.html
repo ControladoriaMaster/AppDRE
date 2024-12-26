@@ -3,15 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tratamento de Dados para DRE</title>
+    <title>Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            background-color: #333;
+            color: white;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .sidebar h1 {
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .menu li {
+            margin-bottom: 1rem;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .menu a:hover {
+            background-color: #555;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .instructions {
+            margin-top: 2rem;
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .instructions h3 {
+            margin-bottom: 1rem;
+        }
+
+        .main-footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>Bem-vindo ao Sistema de Tratamento de Dados para DRE</h1>
-    <p>Escolha um módulo abaixo:</p>
-    <ul>
-        <li><a href="/home">Página Inicial</a></li>
-        <li><a href="/estoque">Movimentação de Estoque</a></li>
-        <!-- Outros módulos podem ser adicionados aqui -->
-    </ul>
+    <div class="main-container">
+        <aside class="sidebar">
+            <h1>Aplicativo DRE</h1>
+            <ul class="menu">
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('estoque') }}">Estoque</a></li>
+                <li><a href="{{ url_for('pagamentos') }}">Pagamentos</a></li>
+                <li><a href="{{ url_for('impostos') }}">Impostos</a></li>
+                <li><a href="{{ url_for('terceirizadas') }}">Terceirizadas</a></li>
+                <li><a href="{{ url_for('despesas') }}">Despesas</a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <section class="intro">
+                <h2>Bem-vindo ao Aplicativo DRE</h2>
+                <p>Escolha uma seção no menu para acessar os diferentes módulos do sistema.</p>
+            </section>
+
+            <section class="instructions">
+                <h3>Instruções de Uso</h3>
+                <p>Aqui você pode adicionar instruções detalhadas sobre como utilizar cada funcionalidade do sistema, dicas para navegação e informações importantes para os usuários.</p>
+            </section>
+
+            <section class="content">
+                <h2>Modelos de Dados:</h2>
+                <ul>
+                    <li><a href="https://drive.google.com/uc?export=download&id=1MvaaoHyCcB85T6LuO1EWmGl259G6P2Qz">Movimentação de Estoque</a></li>
+                    <li><a href="https://drive.google.com/uc?export=download&id=1-SvAZs0izjIHUarTWf0bLhPnE6X9KJ6c">Conteúdo de Programação</a></li>
+                    <li><a href="https://drive.google.com/uc?export=download&id=1YRy80_Jdft3rIht9nWNZhUACmD1ZvwAH">Acompanhamento de Terceirizadas</a></li>
+                    <li><a href="https://drive.google.com/uc?export=download&id=1G6r7551I3NDW68m2apCBWeAUuMeLdDr1">Faturamento e Impostos</a></li>
+                    <li><a href="https://drive.google.com/uc?export=download&id=1mk_Co3eCiXQjMLVR9LvswbpsGfNSob_U">Despesas Contábeis</a></li>
+                    <li><a href="https://drive.google.com/uc?export=download&id=1bjXMhg_jJ4t5d0FPkG0sF_2HofDtLw2p">Pagamentos</a></li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <footer class="main-footer">
+        <p>&copy; 2024 Aplicativo DRE. Todos os direitos reservados.</p>
+    </footer>
 </body>
 </html>
