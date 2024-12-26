@@ -42,6 +42,14 @@ def terceirizadas():
 def despesas():
     return render_template('despesas.html')
 
+@app.route('/programacao')
+def programacao():
+    return render_template('programacao.html')
+
+@app.route('/uniao')
+def uniao():
+    return render_template('uniao.html')
+
 def obter_ip_publico():
     try:
         response = requests.get('https://api64.ipify.org?format=json')
