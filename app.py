@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template
 from routes.home import home_blueprint
 from routes.estoque import estoque_blueprint
@@ -13,4 +14,5 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.getenv("PORT", 5000))  # Render define a variável PORT
+    app.run(host='0.0.0.0', port=port)
