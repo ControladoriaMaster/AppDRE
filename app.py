@@ -18,13 +18,29 @@ def testar_conexao():
 
 app = Flask(__name__)
 
-# Registro de blueprints
-app.register_blueprint(home_blueprint)
-app.register_blueprint(estoque_blueprint)
-
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/estoque')
+def estoque():
+    return render_template('estoque.html')
+
+@app.route('/pagamentos')
+def pagamentos():
+    return render_template('pagamentos.html')
+
+@app.route('/impostos')
+def impostos():
+    return render_template('impostos.html')
+
+@app.route('/terceirizadas')
+def terceirizadas():
+    return render_template('terceirizadas.html')
+
+@app.route('/despesas')
+def despesas():
+    return render_template('despesas.html')
 
 def obter_ip_publico():
     try:
@@ -44,3 +60,5 @@ if __name__ == '__main__':
     testar_conexao()
     port = int(os.getenv("PORT", 5000))  # Render define a variável PORT
     app.run(host='0.0.0.0', port=port)
+    
+
