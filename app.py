@@ -2,6 +2,12 @@ import os
 from flask import Flask, render_template
 from routes.home import home_blueprint
 from routes.estoque import estoque_blueprint
+from routes.pagamentos import pagamentos_blueprint
+from routes.programacao import programacao_blueprint
+from routes.impostos import impostos_blueprint
+from routes.terceirizadas import terceirizadas_blueprint
+from routes.despesas import despesas_blueprint
+from routes.uniao import uniao_blueprint
 from utils.database import get_connection, close_connection
 import requests
 
@@ -18,13 +24,15 @@ def testar_conexao():
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/estoque')
-def estoque():
-    return render_template('estoque.html')
+# Registrar blueprints
+app.register_blueprint(home_blueprint, url_prefix='/')
+app.register_blueprint(estoque_blueprint, url_prefix='/estoque')
+app.register_blueprint(pagamentos_blueprint, url_prefix='/pagamentos')
+app.register_blueprint(programacao_blueprint, url_prefix='/programacao')
+app.register_blueprint(impostos_blueprint, url_prefix='/impostos')
+app.register_blueprint(terceirizadas_blueprint, url_prefix='/terceirizadas')
+app.register_blueprint(despesas_blueprint, url_prefix='/despesas')
+app.register_blueprint(uniao_blueprint, url_prefix='/uniao')
 
 @app.route('/pagamentos')
 def pagamentos():
@@ -64,9 +72,9 @@ def obter_ip_publico():
 
 if __name__ == '__main__':
     obter_ip_publico()
-     # Testar conexão com o banco de dados
+    # Testar conexão com o banco de dados
     testar_conexao()
     port = int(os.getenv("PORT", 5000))  # Render define a variável PORT
-    app.run(host='0.0.0.0', port=port)
-    
 
+    # Executar o app Flask
+    app.run(host='0.0.0.0', port=port, debug=True)
