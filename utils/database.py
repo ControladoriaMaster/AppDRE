@@ -5,12 +5,11 @@ import pandas as pd
 def get_connection():
     try:
         conn = psycopg2.connect(
-                    host=os.getenv("DB_HOST", "34.121.242.200"),  # Padrão: IP do banco offline
-                    database=os.getenv("DB_NAME", "postgres"),    # Padrão: nome do banco
-                    user=os.getenv("DB_USER", "postgres"),        # Padrão: usuário
-                    password=os.getenv("DB_PASSWORD", "oa_bn|yZHz#qGN)8"),  # Padrão: senha do banco offline
-                    port=os.getenv("DB_PORT", "5432")             # Padrão: porta padrão do PostgreSQL
-                )
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            port=os.getenv("DB_PORT", "5432")
         return conn 
     except Exception as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
