@@ -10,6 +10,17 @@ from routes.despesas import despesas_blueprint
 from routes.uniao import uniao_blueprint
 from utils.database import get_connection, close_connection
 import requests
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
+
+# Acessando as variáveis de ambiente
+db_host = os.getenv("DB_HOST")
+db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
+db_port = os.getenv("DB_PORT")
 
 def testar_conexao():
     """
