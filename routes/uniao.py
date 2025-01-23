@@ -6,7 +6,7 @@ import io
 # Define o blueprint
 uniao_blueprint = Blueprint('uniao', __name__, template_folder='../templates')
 
-@uniao_blueprint.route('/', methods=['GET', 'POST'])
+@uniao_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False )
 def processar_uniao():
     if request.method == 'POST':
         try:
