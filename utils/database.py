@@ -21,8 +21,9 @@ def get_connection():
             user=os.getenv("DB_USER"),
             password=os.getenv("DB_PASSWORD"),
             port=os.getenv("DB_PORT", "5432")
-        return conn 
-    except Exception as e:
+        )
+        return conn
+    except psycopg2.Error as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
         return None
 
