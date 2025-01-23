@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Home do Aplicativo DRE</title>
     <style>
         * {
             margin: 0;
@@ -86,6 +86,43 @@
             margin-bottom: 1rem;
         }
 
+        .data-section {
+            margin-top: 2rem;
+        }
+
+        .data-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .data-description {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .data-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .data-buttons a {
+            text-decoration: none;
+            color: white;
+            background-color: #333;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .data-buttons a:hover {
+            background-color: #555;
+        }
+
         .main-footer {
             background-color: #333;
             color: white;
@@ -96,13 +133,14 @@
 </head>
 <body>
     <div class="main-container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <h1>Aplicativo DRE</h1>
             <ul class="menu">
-                <li><a href="{{ url_for('index') }}">Início</a></li>
-                <li><a href="{{ url_for('estoque') }}">Movimentação de Estoque</a></li>
+                <li><a href="{{ url_for('home.index') }}">Início</a></li>
+                <li><a href="{{ url_for('estoque.movimentacao_estoque') }}">Movimentação de Estoque</a></li>
                 <li><a href="{{ url_for('pagamentos') }}">Pagamentos</a></li>
-                <li><a href="{{ url_for('programacao') }}">Conteúdo de Programação </a></li>
+                <li><a href="{{ url_for('programacao') }}">Conteúdo de Programação</a></li>
                 <li><a href="{{ url_for('impostos') }}">Faturamento e Impostos</a></li>
                 <li><a href="{{ url_for('terceirizadas') }}">Acompanhamento de Terceirizadas</a></li>
                 <li><a href="{{ url_for('despesas') }}">Despesas Contábeis</a></li>
@@ -110,6 +148,7 @@
             </ul>
         </aside>
 
+        <!-- Content -->
         <main class="content">
             <section class="intro">
                 <h2>Bem-vindo ao Aplicativo DRE</h2>
@@ -121,22 +160,26 @@
                 <p>Aqui você pode adicionar instruções detalhadas sobre como utilizar cada funcionalidade do sistema, dicas para navegação e informações importantes para os usuários.</p>
             </section>
 
-            <section class="content">
+            <section class="data-section">
                 <h2>Modelos de Dados:</h2>
-                <ul>
-                    <li><a href="https://drive.google.com/uc?export=download&id=1MvaaoHyCcB85T6LuO1EWmGl259G6P2Qz">Movimentação de Estoque</a></li>
-                    <li><a href="https://drive.google.com/uc?export=download&id=1-SvAZs0izjIHUarTWf0bLhPnE6X9KJ6c">Conteúdo de Programação</a></li>
-                    <li><a href="https://drive.google.com/uc?export=download&id=1YRy80_Jdft3rIht9nWNZhUACmD1ZvwAH">Acompanhamento de Terceirizadas</a></li>
-                    <li><a href="https://drive.google.com/uc?export=download&id=1G6r7551I3NDW68m2apCBWeAUuMeLdDr1">Faturamento e Impostos</a></li>
-                    <li><a href="https://drive.google.com/uc?export=download&id=1mk_Co3eCiXQjMLVR9LvswbpsGfNSob_U">Despesas Contábeis</a></li>
-                    <li><a href="https://drive.google.com/uc?export=download&id=1bjXMhg_jJ4t5d0FPkG0sF_2HofDtLw2p">Pagamentos</a></li>
-                </ul>
+                <p class="data-description">
+                    Se você tiver dúvidas sobre os modelos de arquivos necessários para os processos, consulte os exemplos disponíveis abaixo:
+                </p>
+                <div class="data-buttons">
+                    <a href="https://drive.google.com/uc?export=download&id=1MvaaoHyCcB85T6LuO1EWmGl259G6P2Qz" aria-label="Movimentação de Estoque">Movimentação de Estoque</a>
+                    <a href="https://drive.google.com/uc?export=download&id=1-SvAZs0izjIHUarTWf0bLhPnE6X9KJ6c" aria-label="Conteúdo de Programação">Conteúdo de Programação</a>
+                    <a href="https://drive.google.com/uc?export=download&id=1YRy80_Jdft3rIht9nWNZhUACmD1ZvwAH" aria-label="Acompanhamento de Terceirizadas">Acompanhamento de Terceirizadas</a>
+                    <a href="https://drive.google.com/uc?export=download&id=1G6r7551I3NDW68m2apCBWeAUuMeLdDr1" aria-label="Faturamento e Impostos">Faturamento e Impostos</a>
+                    <a href="https://drive.google.com/uc?export=download&id=1mk_Co3eCiXQjMLVR9LvswbpsGfNSob_U" aria-label="Despesas Contábeis">Despesas Contábeis</a>
+                    <a href="https://drive.google.com/uc?export=download&id=1bjXMhg_jJ4t5d0FPkG0sF_2HofDtLw2p" aria-label="Pagamentos">Pagamentos</a>
+                </div>
             </section>
         </main>
     </div>
 
+    <!-- Footer -->
     <footer class="main-footer">
-        <p>&copy; 2024 Aplicativo DRE. Todos os direitos reservados.</p>
+        <p>&copy; 2025 Aplicativo DRE. Todos os direitos reservados.</p>
     </footer>
 </body>
 </html>

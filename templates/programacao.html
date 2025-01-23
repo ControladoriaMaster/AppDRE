@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimentação de Estoque</title>
+    <title>Conteúdo de Programação</title>
     <style>
         * {
             margin: 0;
@@ -143,8 +143,8 @@
 
         <main class="content">
             <section class="form-section">
-                <h2>Movimentação de Estoque</h2>
-                <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('estoque.movimentacao_estoque') }}">
+                <h2>Conteúdo de Programação</h2>
+                <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('programacao') }}">
                     <label for="mes">Mês:</label>
                     <select name="mes" id="mes" required>
                         <option value="">Selecione</option>
@@ -186,7 +186,7 @@
             const fileName = event.target.files[0]?.name || 'Nenhum arquivo selecionado';
             document.getElementById('file-name').textContent = fileName;
         });
-    
+
         // Mostrar mensagem de processamento e gerenciar mudança de status
         const form = document.getElementById('upload-form');
         form.addEventListener('submit', function(event) {
@@ -194,19 +194,18 @@
             const message = document.getElementById('processing-message');
             message.textContent = 'O arquivo está sendo processado, aguarde...';
             message.style.color = '#007BFF';
-    
+
             // Simular o envio do formulário (com um atraso para demonstração)
             setTimeout(() => {
                 form.submit(); // Enviar o formulário após o tempo configurado
             }, 500);
-    
+
             // Mudar mensagem após 20 segundos
             setTimeout(() => {
                 message.textContent = 'Processamento finalizado! Vá para a pasta de downloads.';
                 message.style.color = '#28A745';
-            }, 20000); // 20 segundos
+            }, 20000); // 5 segundos
         });
     </script>
 </body>
 </html>
-

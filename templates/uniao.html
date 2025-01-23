@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimentação de Estoque</title>
+    <title>União dos Arquivos da DRE</title>
     <style>
         * {
             margin: 0;
@@ -105,9 +105,25 @@
             background-color: #555;
         }
 
-        .file-name {
-            margin-bottom: 1rem;
-            font-style: italic;
+        .file-list {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .file-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .file-list li {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            color: #333;
         }
 
         .processing-message {
@@ -143,8 +159,8 @@
 
         <main class="content">
             <section class="form-section">
-                <h2>Movimentação de Estoque</h2>
-                <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('estoque.movimentacao_estoque') }}">
+                <h2>União dos Arquivos da DRE</h2>
+                <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('uniao') }}">
                     <label for="mes">Mês:</label>
                     <select name="mes" id="mes" required>
                         <option value="">Selecione</option>
@@ -161,52 +177,88 @@
                         <option value="Novembro">Novembro</option>
                         <option value="Dezembro">Dezembro</option>
                     </select>
-
+                
                     <label for="ano">Ano:</label>
                     <input type="text" name="ano" id="ano" required>
-
-                    <label for="file">Carregar Arquivo:</label>
-                    <input type="file" name="file" id="file" accept=".xlsx" required>
-                    <p class="file-name" id="file-name">Nenhum arquivo selecionado</p>
-
+                
+                    <label for="files">Carregar Arquivos:</label>
+                    <input type="file" id="files" accept=".xlsx" multiple>
+                    <button type="button" id="add-files-button">Adicionar Arquivos</button>
+                    <div class="file-list" id="file-list">
+                        <ul></ul>
+                    </div>
+                
+                    <input type="hidden" id="all-files" name="all_files">
                     <button type="submit">Processar</button>
                 </form>
+                
                 <p class="processing-message" id="processing-message">Aguardando envio...</p>
-            </section>
-        </main>
-    </div>
-
-    <footer class="main-footer">
-        <p>&copy; 2025 Aplicativo DRE. Todos os direitos reservados.</p>
-    </footer>
-
-    <script>
-        // Atualizar o nome do arquivo selecionado
-        document.getElementById('file').addEventListener('change', function(event) {
-            const fileName = event.target.files[0]?.name || 'Nenhum arquivo selecionado';
-            document.getElementById('file-name').textContent = fileName;
-        });
-    
-        // Mostrar mensagem de processamento e gerenciar mudança de status
-        const form = document.getElementById('upload-form');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevenir comportamento padrão
-            const message = document.getElementById('processing-message');
-            message.textContent = 'O arquivo está sendo processado, aguarde...';
-            message.style.color = '#007BFF';
-    
-            // Simular o envio do formulário (com um atraso para demonstração)
-            setTimeout(() => {
-                form.submit(); // Enviar o formulário após o tempo configurado
-            }, 500);
-    
-            // Mudar mensagem após 20 segundos
-            setTimeout(() => {
-                message.textContent = 'Processamento finalizado! Vá para a pasta de downloads.';
-                message.style.color = '#28A745';
-            }, 20000); // 20 segundos
-        });
-    </script>
+                
+                <script>
+                    const filesToProcess = [];
+                    const fileList = document.getElementById('file-list').querySelector('ul');
+                    const addFilesButton = document.getElementById('add-files-button');
+                    const allFilesInput = document.getElementById('all-files');
+                    const fileInput = document.getElementById('files');
+                
+                    addFilesButton.addEventListener('click', () => {
+                        const files = Array.from(fileInput.files);
+                        files.forEach(file => {
+                            if (!filesToProcess.some(f => f.name === file.name)) {
+                                filesToProcess.push(file);
+                
+                                const listItem = document.createElement('li');
+                                listItem.textContent = file.name;
+                                fileList.appendChild(listItem);
+                            }
+                        });
+                        fileInput.value = '';
+                    });
+                
+                    document.getElementById('upload-form').addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        
+                        if (filesToProcess.length === 0) {
+                            alert('Nenhum arquivo foi adicionado.');
+                            return;
+                        }
+                
+                        const formData = new FormData();
+                        formData.append('mes', document.getElementById('mes').value);
+                        formData.append('ano', document.getElementById('ano').value);
+                
+                        filesToProcess.forEach(file => {
+                            formData.append('files', file);
+                        });
+                
+                        const message = document.getElementById('processing-message');
+                        message.textContent = 'Os arquivos estão sendo processados, aguarde...';
+                        message.style.color = '#007BFF';
+                
+                        try {
+                            const response = await fetch("{{ url_for('uniao') }}", {
+                                method: 'POST',
+                                body: formData
+                            });
+                
+                            if (response.ok) {
+                                message.textContent = 'Processamento finalizado! O arquivo está pronto para download.';
+                                message.style.color = '#28A745';
+                                const blob = await response.blob();
+                                const downloadUrl = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = downloadUrl;
+                                a.download = 'Arquivo_DRE_' + document.getElementById('mes').value + document.getElementById('ano').value + '.xlsx';
+                                a.click();
+                            } else {
+                                message.textContent = 'Erro durante o processamento!';
+                                message.style.color = 'red';
+                            }
+                        } catch (error) {
+                            message.textContent = 'Erro ao enviar os arquivos!';
+                            message.style.color = 'red';
+                        }
+                    });
+                </script>
 </body>
 </html>
-
