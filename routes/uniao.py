@@ -61,7 +61,7 @@ def process_excel_uniao(uploaded_files):
         # Verificar se as colunas necessárias estão no DataFrame
         colunas_necessarias = ['DIRETO_CSC', 'TIPO_RATEIO', 'FONTE', 'CIDADE', 'VALOR_REF']
         for col in colunas_necessarias:
-            if col not in entrada.columns:
+           if col not in entrada.columns:
                 raise ValueError(f"Coluna ausente no arquivo: {col}")
 
         # Valor para DIRETO_CSC
@@ -90,6 +90,17 @@ def process_excel_uniao(uploaded_files):
                                             (entrada['CIDADE'].isin(valores_unicos_cidades)),
                                             valor_direto_cidades,
                                             entrada['DIRETO_CSC'])
+        
+        # Valor para TIPO DE RATEIO
+        valor_rateio_csc = 'TOTAL SEM MOC'  
+
+        # Preenchendo valores TIPO_RATEIO da Fonte DESPESAS CONTÁBIL e CIDADE for igual a CSC
+        entrada['TIPO_RATEIO'] = np.where((entrada['DIRETO_CSC'] == 'CSC / ESTRATÉGIA') & 
+                                            (entrada['TIPO_RATEIO'].isnull()) & 
+                                            (entrada['FONTE'] == 'DESPESAS CONTÁBIL') &
+                                            (entrada['CIDADE'] == 'CSC'),
+                                            valor_rateio_csc,
+                                            entrada['TIPO_RATEIO'])
 
         # Valor para TIPO DE RATEIO
         valor_rateio_cidades = 'OK'
@@ -106,23 +117,23 @@ def process_excel_uniao(uploaded_files):
         # Alterando o Mulitplicador para Zero
         entrada.loc[entrada['CENTRO_CUSTOS'] == 'PRESIDENTE', 'MULTIPLICADOR'] = 0
 
-    #Criando lista de empresas
+        #Criando lista de empresas
         empresas = ['1301-DEVICE COMPANY', '1501-AERO R66 - LOCACOES DE HELICOPTERO SPE L', '0501-KROMA PARTICIPACOES S/A',
                     '1401-SPE VISTA ALEGRE', '1001-ISCA REFLORESTAMENTO LTDA - ME', '2101-MGM PARTICIPACOES EIRELI', '2301-PRIME SERVICE LTDA',
                     'KROMA PARTICIPACOES S/A', 'DEVICE COMPANY', 'SPE VISTA ALEGRE', 'AERO R66 - LOCACOES DE HELICOPTERO SPE L',
                     'ISCA REFLORESTAMENTO LTDA - ME']
     
-    # Alterando o Mulitplicador para Zero
+        # Alterando o Mulitplicador para Zero
         entrada.loc[entrada['EMPRESA'].isin(empresas), 'MULTIPLICADOR'] = 0
         
-    #Criando listas de critérios para conta e fonte
+        #Criando listas de critérios para conta e fonte
         criterio_conta = ['CONTEUDO PROGRAMACAO', 'EMPREITEIRAS SG&A', '13º SALARIO', 'JUROS']
         criterio_fonte = ['DESPESAS CONTÁBIL']
         
-    # Alterando o Mulitplicador para Zero
+        # Alterando o Mulitplicador para Zero
         entrada.loc[(entrada['CONTA'].isin(criterio_conta)) & (entrada['FONTE'].isin(criterio_fonte)), 'MULTIPLICADOR'] = 0
-
-    # Criando as colunas do DataFrame
+      
+        # Criando as colunas do DataFrame
         saida =  pd.DataFrame(columns = ['EMPRESA','DATA','VALOR REF', 'DOCUMENTO', 'HISTORICO', 'COD FORNECEDOR', 'CENTRO DE CUSTO',
                                         'CIDADE', 'CONTA', 'DETALHAMENTO', 'FONTE', 'OBS', 'DIRETO/CSC', 'TIPO DE RATEIO', 
                                         'MULTIPLICADOR', 'VALOR REALIZADO'])
@@ -142,6 +153,8 @@ def process_excel_uniao(uploaded_files):
         saida['DIRETO/CSC'] = entrada['DIRETO_CSC']
         saida['TIPO DE RATEIO'] = entrada['TIPO_RATEIO']
         saida['MULTIPLICADOR'] = entrada['MULTIPLICADOR']
+        # Se a conta for 'SERVICO COBRANCA', definir o multiplicador como -1
+        saida.loc[saida['CONTA'] == 'SERVICO COBRANCA', 'MULTIPLICADOR'] = -1
         saida['VALOR REALIZADO'] = saida['VALOR REF'] * saida['MULTIPLICADOR']
         
         #Construindo listas para filtrar o banco de dados
