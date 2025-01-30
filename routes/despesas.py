@@ -252,9 +252,6 @@ def process_excel_despesas_contabeis(uploaded_file, mes, ano):
         valormult = -1
         tratamento['MULTIPLICADOR'] = tratamento['MULTIPLICADOR'].fillna(valormult)
 
-        # Se a conta for 'CONDOMÍNIO', definir o multiplicador como -1
-        entrada.loc[entrada['CONTA'] == 'CONDOMINIO', 'MULTIPLICADOR'] = -1
-
         # Criando a coluna EEI com base no nome da empresa
         tratamento['EEI'] = tratamento["EMPRESA"].astype(str).str[1:4]
         
