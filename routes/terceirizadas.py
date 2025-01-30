@@ -8,7 +8,7 @@ from utils.database import get_connection, close_connection
 # Define o blueprint
 terceirizadas_blueprint = Blueprint('terceirizadas', __name__, template_folder='../templates')
 
-@terceirizadas_blueprint.route('/', methods=['GET', 'POST'])
+@terceirizadas_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def processar_terceirizadas():
     if request.method == 'POST':
         try:
