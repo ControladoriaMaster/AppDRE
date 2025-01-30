@@ -1,7 +1,11 @@
-from flask import Blueprint, request, render_template, send_file
+from flask import Blueprint, request, render_template, send_file, Flask
 import pandas as pd
 import numpy as np
 import io
+
+# Configuração do Flask para aumentar o tamanho máximo de upload
+app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB de limite para uploads
 
 # Define o blueprint
 uniao_blueprint = Blueprint('uniao', __name__, template_folder='../templates', url_prefix='/uniao')
