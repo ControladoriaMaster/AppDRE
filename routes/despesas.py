@@ -251,7 +251,7 @@ def process_excel_despesas_contabeis(uploaded_file, mes, ano):
         #Tratando os valores em branco na coluna MULTIPLICADOR e preenchenco os valores da coluna IDCLVL 
         valormult = -1
         tratamento['MULTIPLICADOR'] = tratamento['MULTIPLICADOR'].fillna(valormult)
-
+        
         # Criando a coluna EEI com base no nome da empresa
         tratamento['EEI'] = tratamento["EMPRESA"].astype(str).str[1:4]
         
@@ -283,9 +283,6 @@ def process_excel_despesas_contabeis(uploaded_file, mes, ano):
         # Preenchimento dos valores em branco da coluna de DETALHAMENTO com os valores do dicionário criado para cada valor correspondente na coluna IDITEM
         detalhamentobranco = tratamento['IDITEM'].map(dic_it)
         tratamento['DETALHAMENTO'] = tratamento['DETALHAMENTO'].fillna(detalhamentobranco)
-
-        # Se a conta for 'CONDOMÍNIO', definir o multiplicador como -1
-        tratamento.loc[tratamento['CONTA'] == 'CONDOMINIO', 'MULTIPLICADOR'] = -1
 
         # Criando o DataFrame de saída aproveitando algumas colunas do dados de tratamento
         saida = pd.DataFrame(tratamento, columns = ['IDCC','IDCLVL','IDCONTA', 'EMPRESA', 'COD_FILIAL', 'NOME_FILIAL', 'COD_PRODUTO',
