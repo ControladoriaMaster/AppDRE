@@ -283,7 +283,7 @@ def process_excel_despesas_contabeis(uploaded_file, mes, ano):
         # Preenchimento dos valores em branco da coluna de DETALHAMENTO com os valores do dicionário criado para cada valor correspondente na coluna IDITEM
         detalhamentobranco = tratamento['IDITEM'].map(dic_it)
         tratamento['DETALHAMENTO'] = tratamento['DETALHAMENTO'].fillna(detalhamentobranco)
-
+        
         # Criando o DataFrame de saída aproveitando algumas colunas do dados de tratamento
         saida = pd.DataFrame(tratamento, columns = ['IDCC','IDCLVL','IDCONTA', 'EMPRESA', 'COD_FILIAL', 'NOME_FILIAL', 'COD_PRODUTO',
                                         'DESC_PRODUTO', 'QUANTIDADE', 'DATA', 'VALOR_REF', 'DOCUMENTO', 'HISTORICO', 
@@ -304,6 +304,9 @@ def process_excel_despesas_contabeis(uploaded_file, mes, ano):
 
         # Colocando valor padrão na coluna MULTIPLICADOR
         saida['MULTIPLICADOR'] = tratamento['MULTIPLICADOR']
+
+        # Se a conta for 'CONDOMÍNIO', definir o multiplicador como -1
+        saida.loc[saida['CONTA'] == 'CONDOMINIO', 'MULTIPLICADOR'] = -1
 
         # Transformando o valor para preencer a coluna VALOR_REALIZADO
         saida['VALOR_REALIZADO'] = saida['VALOR_REF']*saida['MULTIPLICADOR']
