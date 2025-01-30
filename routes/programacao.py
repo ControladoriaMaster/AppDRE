@@ -6,9 +6,9 @@ from datetime import datetime
 from utils.database import get_connection, close_connection
 
 # Define o blueprint
-programacao_blueprint = Blueprint('programacao', __name__, template_folder='../templates')
+programacao_blueprint = Blueprint('programacao', __name__, template_folder='../templates', url_prefix='/programacao')
 
-@programacao_blueprint.route('/', methods=['GET', 'POST'])
+@programacao_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def movimentacao_programacao():
     if request.method == 'POST':
         try:

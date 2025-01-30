@@ -6,7 +6,7 @@ from datetime import datetime
 from utils.database import get_connection, close_connection
 
 # Define o blueprint
-terceirizadas_blueprint = Blueprint('terceirizadas', __name__, template_folder='../templates')
+terceirizadas_blueprint = Blueprint('terceirizadas', __name__, template_folder='../templates', url_prefix='/terceirizadas')
 
 @terceirizadas_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def processar_terceirizadas():

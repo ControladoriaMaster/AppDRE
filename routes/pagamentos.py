@@ -6,9 +6,9 @@ from datetime import datetime
 from utils.database import get_connection, close_connection
 
 # Define o blueprint
-pagamentos_blueprint = Blueprint('pagamentos', __name__, template_folder='../templates')
+pagamentos_blueprint = Blueprint('pagamentos', __name__, template_folder='../templates', url_prefix='/pagamentos')
 
-@pagamentos_blueprint.route('/', methods=['GET', 'POST'])
+@pagamentos_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def movimentacao_pagamentos():
     if request.method == 'POST':
         try:

@@ -6,9 +6,9 @@ from datetime import datetime
 from utils.database import get_connection, close_connection
 
 # Define o blueprint
-impostos_blueprint = Blueprint('impostos', __name__, template_folder='../templates')
+impostos_blueprint = Blueprint('impostos', __name__, template_folder='../templates', url_prefix='/impostos')
 
-@impostos_blueprint.route('/', methods=['GET', 'POST'])
+@impostos_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def processar_impostos():
     if request.method == 'POST':
         try:

@@ -4,9 +4,9 @@ import numpy as np
 import io
 
 # Define o blueprint
-uniao_blueprint = Blueprint('uniao', __name__, template_folder='../templates')
+uniao_blueprint = Blueprint('uniao', __name__, template_folder='../templates', url_prefix='/uniao')
 
-@uniao_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False )
+@uniao_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def processar_uniao():
     if request.method == 'POST':
         try:

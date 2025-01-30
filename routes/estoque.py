@@ -4,9 +4,9 @@ import io
 from utils.database import get_connection, close_connection, DETALHAMENTO_PRODUTOS
 
 # Define o blueprint
-estoque_blueprint = Blueprint('estoque', __name__, template_folder='../templates')
+estoque_blueprint = Blueprint('estoque', __name__, template_folder='../templates', url_prefix='/estoque')
 
-@estoque_blueprint.route('/', methods=['GET', 'POST'])
+@estoque_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
 def movimentacao_estoque():
     if request.method == 'POST':
         try:
