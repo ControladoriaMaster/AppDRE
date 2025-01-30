@@ -160,7 +160,7 @@
         <main class="content">
             <section class="form-section">
                 <h2>União dos Arquivos da DRE</h2>
-                <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('uniao') }}">
+                <form id="upload-form" method="POST" enctype="multipart/form-data" action="https://aplicativodre.onrender.com/uniao">
                     <label for="mes">Mês:</label>
                     <select name="mes" id="mes" required>
                         <option value="">Selecione</option>
@@ -193,7 +193,7 @@
                 </form>
                 
                 <p class="processing-message" id="processing-message">Aguardando envio...</p>
-                
+
                 <script>
                     const filesToProcess = [];
                     const fileList = document.getElementById('file-list').querySelector('ul');
@@ -269,5 +269,4 @@
     </footer>
         
 </body>
-
 </html>

@@ -144,7 +144,7 @@
         <main class="content">
             <section class="form-section">
                 <h2>Movimentação de Estoque</h2>
-                <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{ url_for('estoque.movimentacao_estoque') }}">
+                <form id="upload-form" method="POST" enctype="multipart/form-data" action="https://aplicativodre.onrender.com/estoque">
                     <label for="mes">Mês:</label>
                     <select name="mes" id="mes" required>
                         <option value="">Selecione</option>
@@ -200,11 +200,11 @@
                 form.submit(); // Enviar o formulário após o tempo configurado
             }, 500);
     
-            // Mudar mensagem após 60 segundos
+            // Mudar mensagem após 20 segundos
             setTimeout(() => {
                 message.textContent = 'Processamento finalizado! Vá para a pasta de downloads.';
                 message.style.color = '#28A745';
-            }, 60000); // 60 segundos
+            }, 20000); // 20 segundos
         });
     </script>
 </body>
