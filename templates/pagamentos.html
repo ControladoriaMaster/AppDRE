@@ -134,7 +134,8 @@
                 <li><a href="{{ url_for('estoque.movimentacao_estoque') }}">Movimentação de Estoque</a></li>
                 <li><a href="{{ url_for('pagamentos') }}">Pagamentos</a></li>
                 <li><a href="{{ url_for('programacao') }}">Conteúdo de Programação</a></li>
-                <li><a href="{{ url_for('impostos') }}">Faturamento e Impostos</a></li>
+                <li><a href="{{ url_for('impostos_24') }}">Faturamento e Impostos - até o ano de 2024 </a></li>
+                <li><a href="{{ url_for('impostos_25') }}">Faturamento e Impostos - a patir de 2025 </a></li>
                 <li><a href="{{ url_for('terceirizadas') }}">Acompanhamento de Terceirizadas</a></li>
                 <li><a href="{{ url_for('despesas') }}">Despesas Contábeis</a></li>
                 <li><a href="{{ url_for('uniao') }}">União dos Arquivos da DRE</a></li>
@@ -144,7 +145,7 @@
         <main class="content">
             <section class="form-section">
                 <h2>Pagamentos</h2>
-                <form id="upload-form" method="POST" enctype="multipart/form-data" action="https://aplicativodre.onrender.com/pagamentos
+                                <form id="upload-form" method="POST" enctype="multipart/form-data" action="https://aplicativodre.onrender.com/programacao">
                     <label for="mes">Mês:</label>
                     <select name="mes" id="mes" required>
                         <option value="">Selecione</option>
