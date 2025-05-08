@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faturamento e Impostos - a partir de 2025 </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            background-color: #333;
+            color: white;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .sidebar h1 {
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .menu li {
+            margin-bottom: 1rem;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .menu a:hover {
+            background-color: #555;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        .form-section {
+            margin: 2rem auto;
+            max-width: 600px;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-section input,
+        .form-section select,
+        .form-section button {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-section button {
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-section button:hover {
+            background-color: #555;
+        }
+
+        .file-name {
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .processing-message {
+            text-align: center;
+            color: #555;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .main-footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <aside class="sidebar">
+            <h1>Aplicativo DRE</h1>
+            <ul class="menu">
+                <li><a href="{{ url_for('home.index') }}">Início</a></li>
+                <li><a href="{{ url_for('estoque.movimentacao_estoque') }}">Movimentação de Estoque</a></li>
+                <li><a href="{{ url_for('pagamentos') }}">Pagamentos</a></li>
+                <li><a href="{{ url_for('programacao') }}">Conteúdo de Programação</a></li>
+                <li><a href="{{ url_for('impostos_24') }}">Faturamento e Impostos - até o ano de 2024 </a></li>
+                <li><a href="{{ url_for('impostos_25') }}">Faturamento e Impostos - a patir de 2025 </a></li>
+                <li><a href="{{ url_for('terceirizadas') }}">Acompanhamento de Terceirizadas</a></li>
+                <li><a href="{{ url_for('despesas') }}">Despesas Contábeis</a></li>
+                <li><a href="{{ url_for('uniao') }}">União dos Arquivos da DRE</a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <section class="form-section">
+                <h2>Faturamento e Impostos - a partit de 2025</h2>
+                <form id="upload-form" method="POST" enctype="multipart/form-data" action="https://aplicativodre.onrender.com/impostos_25">
+                    <label for="mes">Mês:</label>
+                    <select name="mes" id="mes" required>
+                        <option value="">Selecione</option>
+                        <option value="Janeiro">Janeiro</option>
+                        <option value="Fevereiro">Fevereiro</option>
+                        <option value="Março">Março</option>
+                        <option value="Abril">Abril</option>
+                        <option value="Maio">Maio</option>
+                        <option value="Junho">Junho</option>
+                        <option value="Julho">Julho</option>
+                        <option value="Agosto">Agosto</option>
+                        <option value="Setembro">Setembro</option>
+                        <option value="Outubro">Outubro</option>
+                        <option value="Novembro">Novembro</option>
+                        <option value="Dezembro">Dezembro</option>
+                    </select>
+
+                    <label for="ano">Ano:</label>
+                    <input type="text" name="ano" id="ano" required>
+
+                    <label for="file">Carregar Arquivo:</label>
+                    <input type="file" name="file" id="file" accept=".xlsx" required>
+                    <p class="file-name" id="file-name">Nenhum arquivo selecionado</p>
+
+                    <button type="submit">Processar</button>
+                </form>
+                <p class="processing-message" id="processing-message">Aguardando envio...</p>
+            </section>
+        </main>
+    </div>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Aplicativo DRE. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Atualizar o nome do arquivo selecionado
+        document.getElementById('file').addEventListener('change', function(event) {
+            const fileName = event.target.files[0]?.name || 'Nenhum arquivo selecionado';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        // Mostrar mensagem de processamento e gerenciar mudança de status
+        const form = document.getElementById('upload-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevenir comportamento padrão
+            const message = document.getElementById('processing-message');
+            message.textContent = 'O arquivo está sendo processado, aguarde...';
+            message.style.color = '#007BFF';
+
+            // Simular o envio do formulário (com um atraso para demonstração)
+            setTimeout(() => {
+                form.submit(); // Enviar o formulário após o tempo configurado
+            }, 500);
+
+            // Mudar mensagem após 20 segundos
+            setTimeout(() => {
+                message.textContent = 'Processamento finalizado! Vá para a pasta de downloads.';
+                message.style.color = '#28A745';
+            }, 20000); // 20 segundos
+        });
+    </script>
+</body>
+</html>
