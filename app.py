@@ -4,23 +4,13 @@ from routes.home import home_blueprint
 from routes.estoque import estoque_blueprint
 from routes.pagamentos import pagamentos_blueprint
 from routes.programacao import programacao_blueprint
-from routes.impostos import impostos_blueprint
+from routes.impostos_24 import impostos_24_blueprint
+from routes.impostos_25 import impostos_25_blueprint
 from routes.terceirizadas import terceirizadas_blueprint
 from routes.despesas import despesas_blueprint
 from routes.uniao import uniao_blueprint
 from utils.database import get_connection, close_connection
 import requests
-from dotenv import load_dotenv
-
-# Carregar variáveis de ambiente do arquivo .env
-load_dotenv()
-
-# Acessando as variáveis de ambiente
-db_host = os.getenv("DB_HOST")
-db_name = os.getenv("DB_NAME")
-db_user = os.getenv("DB_USER")
-db_password = os.getenv("DB_PASSWORD")
-db_port = os.getenv("DB_PORT")
 
 def testar_conexao():
     """
@@ -40,7 +30,8 @@ app.register_blueprint(home_blueprint, url_prefix='/')
 app.register_blueprint(estoque_blueprint, url_prefix='/estoque')
 app.register_blueprint(pagamentos_blueprint, url_prefix='/pagamentos')
 app.register_blueprint(programacao_blueprint, url_prefix='/programacao')
-app.register_blueprint(impostos_blueprint, url_prefix='/impostos')
+app.register_blueprint(impostos_24_blueprint, url_prefix='/impostos_24')
+app.register_blueprint(impostos_25_blueprint, url_prefix='/impostos_25')
 app.register_blueprint(terceirizadas_blueprint, url_prefix='/terceirizadas')
 app.register_blueprint(despesas_blueprint, url_prefix='/despesas')
 app.register_blueprint(uniao_blueprint, url_prefix='/uniao')
@@ -49,9 +40,13 @@ app.register_blueprint(uniao_blueprint, url_prefix='/uniao')
 def pagamentos():
     return render_template('pagamentos.html')
 
-@app.route('/impostos')
-def impostos():
-    return render_template('impostos.html')
+@app.route('/impostos_24')
+def impostos_24():
+    return render_template('impostos_24.html')
+
+@app.route('/impostos_25')
+def impostos_25():
+    return render_template('impostos_25.html')
 
 @app.route('/terceirizadas')
 def terceirizadas():
