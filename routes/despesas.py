@@ -109,6 +109,9 @@ def process_excel_despesas_contabeis(uploaded_file, mes, ano):
         # Construindo o banco de dados de entrada com a coluna cidade sendo preenchida com o nome das abas referente a cada uma das
         # cidades nas abas no arquivo em Excel
         entrada = pd.concat([df.assign(FONTE=aba) for aba, df in dfs.items()], ignore_index=True)
+        
+        entrada['Valor'] = pd.to_numeric(entrada['Valor'], errors='coerce')
+        entrada = entrada[entrada['Valor'].notna()]  # remove linhas que não são numéricas        
 
         # Criando o DataFrame de tratamento aproveitando algumas colunas dos dados de entrada
         tratamento = pd.DataFrame(entrada, columns = ['Filial','Data Lcto','CtaDebito','Valor', 'Hist Lanc', 'C Custo Deb', 'Item Conta C',
