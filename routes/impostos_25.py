@@ -177,10 +177,7 @@ def process_excel_faturamento(uploaded_file, mes, ano):
         tratamento_impostos['VALOR_COFINS'] = tratamento_impostos.apply(lambda row: cofins.aplicar_imposto(row['VALOR_COFINS']) 
                                                                     if row['COFINS'] else row['COFINS'], axis=1)
 
-        tratamento_impostos['FUST'] = tratamento_impostos['DESCRICAO'].apply(lambda x: x == 'MASTER RESOLVE' or x == 'MENSALIDADE PAY TV'  
-                                                                     or x == 'SCM' or x == 'SCM SOB MVNO' 
-                                                                     or x == 'SERVICO DE VALOR ADICIONAL' 
-                                                                     or x == 'SERVIÇOS TÉCNICOS' or x == 'SVA SOBRE MVNO')
+        tratamento_impostos['FUST'] = tratamento_impostos['DESCRICAO'].apply(lambda x: x == 'MENSALIDADE PAY TV' or x == 'SCM' or x == 'SCM SOB MVNO')
         
         fust = Imposto(aliquota=1)
 
@@ -189,10 +186,7 @@ def process_excel_faturamento(uploaded_file, mes, ano):
         tratamento_impostos['VALOR_FUST'] = tratamento_impostos.apply(lambda row: fust.aplicar_imposto(row['VALOR_FUST']) 
                                                                     if row['FUST'] else row['FUST'], axis=1)
 
-        tratamento_impostos['FUNTTEL'] = tratamento_impostos['DESCRICAO'].apply(lambda x: x == 'MASTER RESOLVE' or x == 'MENSALIDADE PAY TV'  
-                                                                     or x == 'SCM' or x == 'SCM SOB MVNO' 
-                                                                     or x == 'SERVICO DE VALOR ADICIONAL' 
-                                                                     or x == 'SERVIÇOS TÉCNICOS' or x == 'SVA SOBRE MVNO')
+        tratamento_impostos['FUNTTEL'] = tratamento_impostos['DESCRICAO'].apply(lambda x: x == 'MENSALIDADE PAY TV' or x == 'SCM' or x == 'SCM SOB MVNO')
 
         funttel = Imposto(aliquota=0.5)
 
@@ -211,6 +205,7 @@ def process_excel_faturamento(uploaded_file, mes, ano):
             ('SERVIÇOS DIGITAIS', 'OMC'),
             ('UBOOK 1', 'OMC'),
             ('UBOOK 2', 'OMC'),
+            ('UBOOK 3', 'OMC'),
             ('LANÇAMENTOS FINANCEIROS', 'OP11'),
             ('PSCI', 'OP11'),
             ('SERVIÇOS DIGITAIS', 'OP11'),
@@ -224,16 +219,33 @@ def process_excel_faturamento(uploaded_file, mes, ano):
             ('UBOOK 2', 'ORION'),
             ('UBOOK 3', 'ORION'),
         }
-
+       
+        filiais_especiais = {'OP11', 'ORION', 'OMC'}
+        ubooks = {'UBOOK 1', 'UBOOK 2', 'UBOOK 3'}
+        
         tratamento_impostos['CSLL'] = tratamento_impostos.apply(
             lambda row: (row['DESCRICAO'], row['FILIAL']) in combinacoes_csll,
             axis=1
         )
 
-        csll = Imposto(aliquota=(32*9)/100)
+        def aliquota_csll(row):
+            if not row['CSLL']:
+                return None
 
-        tratamento_impostos['VALOR_CSLL'] = tratamento_impostos.apply(lambda row: csll.aplicar_imposto(row['VALOR']) if row['CSLL'] 
-                                                                else row['CSLL'], axis=1)
+            if row['FILIAL'] in filiais_especiais:
+                return 1.08 if row['DESCRICAO'] in ubooks else 2.88
+            
+            if row['FILIAL'] == 'ITACOLOMI':
+                return 3.00
+        
+            return None
+
+        tratamento_impostos['ALIQUOTA_CSLL'] = tratamento_impostos.apply(aliquota_csll, axis=1)
+
+        tratamento_impostos['VALOR_CSLL'] = tratamento_impostos.apply(
+            lambda row: row['VALOR'] * (row['ALIQUOTA_CSLL'] / 100) if row['CSLL'] else 0,
+            axis=1
+        )
 
         combinacoes_ir = {
             ('INSTALACAO', 'ITACOLOMI'),
@@ -245,6 +257,7 @@ def process_excel_faturamento(uploaded_file, mes, ano):
             ('SERVIÇOS DIGITAIS', 'OMC'),
             ('UBOOK 1', 'OMC'),
             ('UBOOK 2', 'OMC'),
+            ('UBOOK 3', 'OMC'),
             ('LANÇAMENTOS FINANCEIROS', 'OP11'),
             ('PSCI', 'OP11'),
             ('SERVIÇOS DIGITAIS', 'OP11'),
@@ -264,19 +277,23 @@ def process_excel_faturamento(uploaded_file, mes, ano):
             axis=1
         )
 
-        adicional_ir_total = tratamento_impostos.loc[tratamento_impostos['IR'] == True, 'VALOR'].sum()
-        adicional_ir = (adicional_ir_total*(32/100))-20000
-        adicional_ir = ((adicional_ir *10)/adicional_ir_total)/100
-        adicional_ir
-
-        tratamento_impostos['ADICIONAL_IR'] = tratamento_impostos.apply(lambda row: row['VALOR'] * adicional_ir if row['IR'] else row['IR'], axis=1)
-
-        ir = Imposto(aliquota=(32*15)/100)
-
-        tratamento_impostos['VALOR_IR'] = tratamento_impostos.apply(lambda row: ir.aplicar_imposto(row['VALOR']) if row['IR'] 
-                                                                else row['IR'], axis=1)
+        def aliquota_ir(row):
+            if not row['IR']:
+                return None
         
-        tratamento_impostos['VALOR_IR'] = tratamento_impostos['VALOR_IR'] + tratamento_impostos['ADICIONAL_IR']
+            if row['FILIAL'] in filiais_especiais:
+                return 2.00 if row['DESCRICAO'] in ubooks else 8.00
+            
+            if row['FILIAL'] == 'ITACOLOMI':
+                return 5.00
+        
+            return None
+
+        tratamento_impostos['ALIQUOTA_IR'] = tratamento_impostos.apply(aliquota_ir, axis=1)
+
+        tratamento_impostos['VALOR_IR'] = tratamento_impostos.apply(
+            lambda row: row['VALOR'] * (row['ALIQUOTA_IR'] / 100) if row['IR'] else 0,
+            axis=1
 
         df_empilhado = pd.melt(tratamento_impostos, id_vars=['FILIAL','CIDADE', 'IDCLVL', 'DATA', 'CONTA', 'ICMS', 'PIS', 'COFINS', 'FUST', 
                                                             'FUNTTEL', 'CSLL', 'IR'], value_vars=['VALOR_ICMS', 'VALOR_PIS', 
