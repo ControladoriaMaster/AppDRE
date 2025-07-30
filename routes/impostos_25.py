@@ -5,7 +5,6 @@ import io
 from datetime import datetime
 from utils.database import get_connection, close_connection
 
-# Define o blueprint
 impostos_25_blueprint = Blueprint('impostos_25', __name__, template_folder='../templates', url_prefix='/impostos')
 
 @impostos_25_blueprint.route('/', methods=['GET', 'POST'], strict_slashes=False)
@@ -109,15 +108,15 @@ def process_excel_faturamento(uploaded_file, mes, ano):
 
         tratamento ['DESCRICAO'] = entrada ['ESTRATIFICADO'].str.upper()
 
-        # Os valore da coluna CONTA são preenchidos com base nos valores de referência da coluna ESTRATIFICADO do banco de entrada.
-        # Porém, os valores devem ser transformados e agrupados de acordo com os tipos de conta disponíveis.
-        # Valores autalizados - Alteração principal no código está aqui.
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'INSTALACAO', 'VENDAS DE INTERNET', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'Lançamentos Financeiros', 'VENDAS DE INTERNET', tratamento['CONTA'])
+        tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'LANCAMENTOS FINANCEIROS', 'VENDAS DE INTERNET', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'Locação', 'LOCAÇÃO DE BENS E MÓVEIS', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'Master Resolve', 'SERVIÇOS DIGITAIS', tratamento['CONTA'])
+        tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'MASTER RESOLVE', 'SERVIÇOS DIGITAIS', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'Mensalidade Pay TV', 'NF MENSALIDADE', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'PACOTE SUPORTE AVANÇADO', 'SERVIÇOS DIGITAIS', tratamento['CONTA'])
+        tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'PACOTE SUPORTE AVANCADO', 'SERVIÇOS DIGITAIS', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'PSCI', 'VENDAS DE INTERNET', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'SCM', 'NF SCM', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'SCM SOB MVNO', 'NF SCM', tratamento['CONTA'])
@@ -125,11 +124,11 @@ def process_excel_faturamento(uploaded_file, mes, ano):
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'SERVIÇOS DIGITAIS', 'SERVIÇOS DIGITAIS', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'Serviços Técnicos', 'SERVIÇOS COMPLEMENTARES', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'SVA sobre MVNO', 'SVA SOBRE MVNO', tratamento['CONTA'])
+        tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'SVA SOBRE MVNO', 'SVA SOBRE MVNO', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'UBOOK 1', 'UBOOK 1', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'UBOOK 2', 'UBOOK 2', tratamento['CONTA'])
         tratamento['CONTA'] = np.where(entrada['ESTRATIFICADO'] == 'UBOOK 3', 'UBOOK 3', tratamento['CONTA'])
 
-        # Criando o DataFrame para o tratamento dos impostos 
         tratamento_impostos = pd.DataFrame(tratamento, columns = ['CIDADE', 'IDCLVL', 'DATA', 'VALOR', 'FILIAL', 'CONTA', 'DESCRICAO', 
                                                         'ICMS', 'PIS', 'COFINS', 'FUST', 'FUNTTEL', 'CSLL', 'IR'])
 
