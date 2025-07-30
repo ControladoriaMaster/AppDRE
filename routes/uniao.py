@@ -64,6 +64,8 @@ def process_excel_uniao(uploaded_files):
            if col not in entrada.columns:
                 raise ValueError(f"Coluna ausente no arquivo: {col}")
 
+        entrada['CONTA'] = np.where(entrada['HISTORICO'] == 'LANCAMENTOS FINANCEIROS', 'VENDAS DE INTERNET', entrada['CONTA'])
+        
         # Valor para DIRETO_CSC
         valor_direto_csc = 'CSC / ESTRATÉGIA'
 
