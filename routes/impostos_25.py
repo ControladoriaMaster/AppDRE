@@ -294,6 +294,7 @@ def process_excel_faturamento(uploaded_file, mes, ano):
         tratamento_impostos['VALOR_IR'] = tratamento_impostos.apply(
             lambda row: row['VALOR'] * (row['ALIQUOTA_IR'] / 100) if row['IR'] else 0,
             axis=1
+        )
 
         df_empilhado = pd.melt(tratamento_impostos, id_vars=['FILIAL','CIDADE', 'IDCLVL', 'DATA', 'CONTA', 'ICMS', 'PIS', 'COFINS', 'FUST', 
                                                             'FUNTTEL', 'CSLL', 'IR'], value_vars=['VALOR_ICMS', 'VALOR_PIS', 
