@@ -65,6 +65,8 @@ def process_excel_uniao(uploaded_files):
                 raise ValueError(f"Coluna ausente no arquivo: {col}")
 
         entrada['CONTA'] = np.where(entrada['HISTORICO'] == 'LANCAMENTOS FINANCEIROS', 'VENDAS DE INTERNET', entrada['CONTA'])
+        entrada['CIDADE'] = np.where(entrada['CIDADE'] == 'DIVINOPOLIS REGIONAL', 'DIVINOPOLIS', entrada['CIDADE'])
+        entrada['CIDADE'] = np.where(entrada['CIDADE'] == 'DIVINOPOLIS CSC', 'CSC', entrada['CIDADE'])
         
         # Valor para DIRETO_CSC
         valor_direto_csc = 'CSC / ESTRATÉGIA'
