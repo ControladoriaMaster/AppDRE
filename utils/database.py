@@ -23,9 +23,8 @@ def get_connection():
             port=os.getenv("DB_PORT", "5432")
         )
         return conn
-    except psycopg2.OperationalError as e:
-        print("Falha ao conectar ao banco de dados. Verifique host, porta, firewall e credenciais.")
-        print(f"Detalhes: {e}")
+    except psycopg2.Error as e:
+        print(f"Erro ao conectar ao banco de dados: {e}")
         return None
 
 def load_movements():
@@ -83,4 +82,3 @@ DETALHAMENTO_PRODUTOS = {
             'SUPORTE TELHA 3/4': 'SUPORTE TELHA',
             'TUBO 3 METROS P/ NET WIRELLES': 'TUBO 3 METROS'
             }
-
