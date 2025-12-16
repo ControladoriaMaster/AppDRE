@@ -1,2 +1,56 @@
+# ENV files
 .env
-__pycache__
+*.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# Virtual environments
+venv/
+.env/
+env/
+.venv/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Flask instance folder
+instance/
+
+# Local sqlite (if used)
+*.sqlite3
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Pip installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Compiled files
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs
+*.log
+
+# Render build logs
+render.yaml
